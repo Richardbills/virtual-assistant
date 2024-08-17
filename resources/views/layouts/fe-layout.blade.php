@@ -42,6 +42,8 @@
         <link rel="stylesheet" href="{{asset('css/style.css')}}">
         <link rel="stylesheet" href="{{asset('css/responsive.css')}}">
 		
+		@vite(['resources/js/app.js', 'resources/css/app.css']) <!-- Include Vite assets -->
+</head>
     </head>
     <body>
 	

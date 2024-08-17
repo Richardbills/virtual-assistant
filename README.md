@@ -16,12 +16,14 @@ MedicAssist is a virtual Assistant - Online
 - Feedback
 - Realtime Chat
 
-## Setup instruction
+## Setup instructions
 - Clone the repository
 - Setup up the environment by duplicating the .env.example and updating with correct details 
 - Run npm install
 - Run npm run watch
 
+## Resources
+- https://vueschool.io/articles/vuejs-tutorials/the-ultimate-guide-for-using-vue-js-with-laravel/
 
 ## Credits
 Application developed by Ebenezer Babalola https://www.linkedin.com/in/ebenezer-babalola-654493158/
