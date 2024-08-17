@@ -8,13 +8,13 @@
 		<meta name="description" content="">
 		<meta name='copyright' content=''>
 		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-		
+
 		<!-- Title -->
         <title>MedicAssist - Virtual Doctor For Your Health.</title>
-		
+
 		<!-- Favicon -->
         <link rel="icon" href="{{asset('img/favicon.png')}}">
-		
+
 		<!-- Google Fonts -->
 		<link href="https://fonts.googleapis.com/css?family=Poppins:200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i&display=swap" rel="stylesheet">
 
@@ -36,17 +36,17 @@
         <link rel="stylesheet" href="{{asset('css/animate.min.css')}}">
 		<!-- Magnific Popup CSS -->
         <link rel="stylesheet" href="{{asset('css/magnific-popup.css')}}">
-		
+
 		<!-- Medipro CSS -->
         <link rel="stylesheet" href="{{asset('css/normalize.css')}}">
         <link rel="stylesheet" href="{{asset('css/style.css')}}">
         <link rel="stylesheet" href="{{asset('css/responsive.css')}}">
-		
+
 		@vite(['resources/js/app.js', 'resources/css/app.css']) <!-- Include Vite assets -->
 </head>
     </head>
     <body>
-	
+
 
 		@if (\Request::is('/'))
 		<!-- Preloader -->
@@ -55,7 +55,7 @@
                 <div class="loader-outter"></div>
                 <div class="loader-inner"></div>
 
-                <div class="indicator"> 
+                <div class="indicator">
                     <svg width="16px" height="12px">
                         <polyline id="back" points="1 6 4 6 6 11 10 1 12 6 15 6"></polyline>
                         <polyline id="front" points="1 6 4 6 6 11 10 1 12 6 15 6"></polyline>
@@ -73,7 +73,7 @@
 		@if (\Request::is('/'))
         	@include('partials.footer')
 		@endif
-		
+
 		<!-- jquery Min JS -->
         <script src="{{asset('js/jquery.min.js')}}"></script>
 		<!-- jquery Migrate JS -->
@@ -116,14 +116,5 @@
 		<script src="{{asset('js/main.js')}}"></script>
 		<!-- Anmie JS -->
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.2/anime.min.js" integrity="sha512-aNMyYYxdIxIaot0Y1/PLuEu3eipGCmsEUBrUq+7aVyPGMFH8z0eTP0tkqAvv34fzN6z+201d3T8HPb1svWSKHQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-
-
-		<script>
-			anime({
-				targets: '#assistant',
-				translateY: 50,
-				duration: 10,
-			});
-		</script>
     </body>
 </html>
