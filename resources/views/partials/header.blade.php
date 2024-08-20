@@ -43,11 +43,13 @@
                     </div>
                     <div class="col-lg-7 col-md-9 col-12">
                     </div>
-                    <div class="col-lg-2 col-12">
-                        <div class="get-quote" style="margin-bottom: 10px;">
-                            <a href="{{route('diagnosis')}}" class="btn">Start Diagnosis</a>
+
+                        <div class="col-lg-2 col-12" style="margin-bottom: 10px;">
+                            <div class="get-quote">
+                                <a href="{{route('diagnosis')}}" class="btn">Start Diagnosis</a>
+                            </div>
                         </div>
-                    </div>
+
                 </div>
             </div>
         </div>
