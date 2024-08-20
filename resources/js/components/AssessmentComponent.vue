@@ -1,132 +1,95 @@
 <template>
-    <div class="assistant-component">
-        <img id="assistant" src="/public/img/eb-assistant.png" alt="EB Assistant Animation">
+
+    <div class="assessment-component" style="text-align: left;">
+        <router-link to="/diagnosis"><i class="fa fa-arrow-left"></i> Go back to diagnosis | Restart</router-link>
         <br><br>
-        <hr><br>
 
-        <h1><span>Let's get started Assessment</span></h1>
-        <p>Feel free to summarize how you feel and let's help you identify what the issue might be</p>
+        <h1 style="text-align: left;"><span>Kindly answer <br>the following questions</span></h1>
+        <span>Respond with a Yes / No</span>
 
-        <form class="search-form" @submit.prevent="submitForm">
-            <input placeholder="Search : I feel fed up with life" type="text" v-model="formData.search">
-            <button class="btn" type="submit"><i class="fa fa-search"></i></button>
-            <span v-if="message">{{ message }}</span>
-        </form>
-    </div>
+        <hr>
+        <div id="questionContainer">
+            <!-- Question goes here ... -->
+             <h2>Do you experience headache?</h2>
+             <h5>Do you experience headache?</h5>
+             <h4 style="font-size: 15px;">{{ curSymptoms }} / {{ totalSymptoms }}</h4>
 
-    <!-- Modal -->
-    <div class="modal fade" id="AssistantModal" tabindex="-1" role="dialog" aria-labelledby="AssistantModalTitle"
-        aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-body text-left" style="color: #000">
+             <br>
 
-                    <img class="modal-title" src="/public/img/eb-assistant-bare.png" alt="EB Assistant Animation">
-                    <br><br>
-                    You are not alone dear, we are going to help you navigate thoughts
-                    <br>
-                    <br>
-                    <h5 style="color: #1b76d0">Like</h5>
-                    <br>
+            <input class="radio" type="radio" name="response" v-model="selectedResponse" value="YES" id="yesOption" />
+            <label for="yesOption" style="font-size: 20px; font-weight: bold; color: black;">YES</label>
 
-                    <div v-html="similarSearch"></div>
+             <input class="radio" type="radio" name="response" v-model="selectedResponse" value="NO" id="noOption" />
+             <label for="noOption" style="font-size: 20px; font-weight: bold; color: black;">NO</label>
 
-                    <h4 style="color: #1b76d0">Let's proceed in understanding how you feel with a few more questions</h4>
-                    <br>
-
-                   <CountdownTimer :key="countdownKey" @countdown-finished="onCountdownFinished" />
-                </div>
+            <br>
+            <div style="text-align: right;">
+                <button class="btn btn-md btn-primary" @click="nextQuestion" style="float: right;">Next</button>
             </div>
+
         </div>
     </div>
-    <!-- End of Modal -->
 
 </template>
 
 <script>
 import axios from 'axios';
-import CountdownTimer from './CountdownTimer.vue';
 
 export default {
-    components: {
-        CountdownTimer,
-    },
-    name: 'DiagnosisComponent',
+    name: 'AssessmentComponent',
     data() {
         return {
-            message: '',
-            similarSearch: '',
-            formData: {
-                search: '',
-            },
-            countdownKey: 0
+            symptoms : [],
+            curSymptoms : 0,
+            totalSymptoms : 0,
+            selectedResponse: '',
+            responseMessage : '',
         };
     },
     mounted() {
-        console.log('Assistant Component is mounted!');
+        console.log('Assessment Component is mounted!');
+        this.fetchGeneralSymptoms()
+
         anime({
-            targets: '#assistant',
-            translateY: 50,
-            duration: 1000,
+            targets: '.assessment-component',
+            translateY: 30,
+            duration: 9000,
         });
     },
     methods: {
-        async submitForm() {
-            if (this.formData.search.length > 1) {
+        async fetchGeneralSymptoms() {
                 try {
                     // Send POST request to Laravel API
-                    const response = await axios.post('/api/v1/assess-query', this.formData);
+                    const response = await axios.get('/api/v1/fetch-common-symptoms');
 
                     if (response.data.length > 0) {
-                        this.formData = { search: '' };
-                        this.triggerModal();
-                        this.responseFound = true;
-
-                        this.similarSearch = "";
-                        response.data.forEach(res => {
-                            this.similarSearch += "<h4 style='color: #000 !important'><strong><i>" + res + " ...</i></strong></h4><br>";
-                        });
+                        this.symptoms = response.data;
+                        this.totalSymptoms = response.data.length;
                     }
                     else {
-                        this.message = "Oh! sorry, am unable to continue with your diagnosis"
+                        this.responseMessage = 'No symptoms loaded';
                     }
                 } catch (error) {
                     // Handle errors
-                    if (error.response && error.response.data) {
-                        this.responseMessage = error.response.data.message || 'An error occurred';
-                    } else {
-                        this.responseMessage = 'An error occurred';
-                    }
+                    this.responseMessage = error.response?.data?.message || 'An error occurred';
+                } finally {
+                    this.curSymptoms = 0;
                 }
+        },
+        nextQuestion() {
+            if (this.selectedResponse !== '') {
+                this.curSymptoms += 1;
+                this.selectedResponse = '';
+
+                // Optionally load the next symptom/question here
             }
-        },
-        triggerModal() {
-            $('#AssistantModal').modal()
-            this.resetCountdown()
-        },
-        onCountdownFinished() {
-            if(this.responseFound)
-            {
-                $('#AssistantModal').modal('toggle')
-                this.proceedToDiagnosis();
-            }
-            else{
-                this.resetCountdown()
-            }
-        },
-        resetCountdown() {
-            this.countdownKey += 1; // Increment the key to reset the countdown
-        },
-        proceedToDiagnosis() {
-            // Navigate to next page
-            this.$router.push('/assessment');
         },
     }
 }
 </script>
 
 <style scoped>
-.assistant-component {
+.assessment-component {
     text-align: center;
     padding: 20px;
     font-family: Arial, sans-serif;
@@ -135,5 +98,8 @@ export default {
 #message {
     color: red;
     font-weight: bold;
+}
+.radio {
+    margin: 40px;
 }
 </style>
