@@ -34,7 +34,7 @@
                     <h4 style="color: #1b76d0">Let's proceed in understanding how you feel with a few more questions</h4>
                     <br>
 
-                   <CountdownTimer @countdown-finished="onCountdownFinished" />
+                   <CountdownTimer :key="countdownKey" @countdown-finished="onCountdownFinished" />
                 </div>
             </div>
         </div>
@@ -58,7 +58,8 @@ export default {
             similarSearch: '',
             formData: {
                 search: '',
-            }
+            },
+            countdownKey: 0
         };
     },
     mounted() {
@@ -71,22 +72,20 @@ export default {
     },
     methods: {
         async submitForm() {
-            // Pre check
             if (this.formData.search.length > 1) {
                 try {
                     // Send POST request to Laravel API
                     const response = await axios.post('/api/v1/assess-query', this.formData);
-                    console.log(response.data.length)
+
                     if (response.data.length > 0) {
                         this.formData = { search: '' };
                         this.triggerModal();
+                        this.responseFound = true;
 
                         this.similarSearch = "";
                         response.data.forEach(res => {
                             this.similarSearch += "<h4 style='color: #000 !important'><strong><i>" + res + " ...</i></strong></h4><br>";
                         });
-
-                        this.proceedToDiagnosis()
                     }
                     else {
                         this.message = "Oh! sorry, am unable to continue with your diagnosis"
@@ -103,14 +102,24 @@ export default {
         },
         triggerModal() {
             $('#AssistantModal').modal()
+            this.resetCountdown()
         },
         onCountdownFinished() {
-            $('#AssistantModal').modal('toggle')
-            proceedToDiagnosis();
+            if(this.responseFound)
+            {
+                $('#AssistantModal').modal('toggle')
+                this.proceedToDiagnosis();
+            }
+            else{
+                this.resetCountdown()
+            }
+        },
+        resetCountdown() {
+            this.countdownKey += 1; // Increment the key to reset the countdown
         },
         proceedToDiagnosis() {
             // Navigate to next page
-            this.$router.push('/diagnosis');
+            this.$router.push('/assessment');
         },
     }
 }
