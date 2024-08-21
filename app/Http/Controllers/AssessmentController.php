@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Answer;
 use App\Models\Question;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Config;
@@ -49,6 +50,16 @@ class AssessmentController extends Controller
         })
         ->first();
         $ids = Question::where('type', $request->type)->pluck('id');
+
+
+        // Store answers if any
+        if($request->answer == "YES" || $request->answer == "NO")
+        {
+            Answer::updateOrCreate(
+                ['session_id' => $request->session_id, 'question_id' => $request->question_id],
+                ['answer' => $request->answer]
+            );
+        }
 
         return response()->json([
             'question' => $question,

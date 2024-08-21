@@ -41,18 +41,22 @@ export default {
     name: 'AssessmentComponent',
     data() {
         return {
-            symptoms : [[]],
+            symptoms : [],
             ids : [],
             curSymptom : 0,
             totalSymptoms : 0,
             selectedResponse: '',
             responseMessage : '',
-            curType : 'common'
+            curType : 'common',
+            sessionId : '',
         };
     },
-    mounted() {
+    async mounted() {
         console.log('Assessment Component is mounted!');
-        this.fetchGeneralSymptoms()
+
+        // Generate unique session identifier
+        this.sessionId = await this.generateUniqueId();
+        this.fetchGeneralSymptoms();
 
         anime({
             targets: '.assessment-component',
@@ -63,17 +67,14 @@ export default {
     methods: {
         async fetchGeneralSymptoms() {
             try {
-                // (this.curSymptom == 0)?'0':this.ids[this.curSymptom++]+"
-                console.log("/api/v1/fetch-common-symptoms?type="+this.curType+"&id="+this.curSymptom);
-
                 // Send POST request to Laravel APIdd
-                const response = await axios
-                .get("/api/v1/fetch-common-symptoms?type="+this.curType+"&id="+this.curSymptom);
+                const response = await axios.get("/api/v1/fetch-common-symptoms?type="+this.curType+"&id="+this.curSymptom+"&session_id="+this.sessionId+"&question_id="+this.curSymptom+"&answer="+this.selectedResponse);
 
                 if (response.data.question) {
                     this.symptoms = [response.data.question];
                     this.totalSymptoms = response.data.count;
                     this.ids = response.data.ids
+                    this.curSymptom += 1;
 
                     this.curType = response.data.question.type
                     this.curId = response.data.question.id
@@ -94,12 +95,27 @@ export default {
         },
         nextQuestion() {
             if (this.selectedResponse !== '' && this.curSymptom < this.ids.length) {
-                this.curSymptom += 1;
-                this.selectedResponse = '';
-
                 this.fetchGeneralSymptoms()
             }
         },
+        async generateUniqueId(length = 16) {
+            // Characters to use for the identifier
+            const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+            let result = '';
+
+            // Add randomness using current time
+            const datePart = Date.now().toString(36); // Base36 for compactness
+            result += datePart;
+
+            // Generate random characters
+            for (let i = result.length; i < length; i++) {
+                const randomIndex = Math.floor(Math.random() * chars.length);
+                result += chars[randomIndex];
+            }
+
+            // Return the unique identifier, trimmed to the desired length
+            return result.substr(0, length);
+        }
     }
 }
 </script>
