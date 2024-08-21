@@ -9,6 +9,10 @@ const routes = [
         path: "/assessment",
         component: () => import("./components/AssessmentComponent.vue"),
     },
+    {
+        path: "/assessment-streamline",
+        component: () => import("./components/AssessmentStreamlineComponent.vue"),
+    },
 ];
 
 export default createRouter({

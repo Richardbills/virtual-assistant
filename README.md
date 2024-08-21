@@ -28,3 +28,8 @@ MedicAssist is a virtual Assistant - Online
 
 ## Credits
 Application developed by Ebenezer Babalola https://www.linkedin.com/in/ebenezer-babalola-654493158/
+
+## Diagnostic Criteria
+Mental health professionals often use diagnostic criteria from the Diagnostic and Statistical Manual of Mental Disorders (DSM-5) or similar resources. According to DSM-5, a diagnosis of Major Depressive Disorder (MDD) requires:
+
+At least five of the common symptoms

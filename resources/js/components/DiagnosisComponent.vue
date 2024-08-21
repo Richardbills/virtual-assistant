@@ -59,7 +59,7 @@ export default {
             formData: {
                 search: '',
             },
-            countdownKey: 0
+            countdownKey: 0,
         };
     },
     mounted() {

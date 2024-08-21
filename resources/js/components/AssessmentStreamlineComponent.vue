@@ -1,33 +1,43 @@
 <template>
 
     <div class="assessment-component" style="text-align: left;">
-        <router-link to="/diagnosis"><i class="fa fa-arrow-left"></i> Go back to diagnosis | Restart</router-link>
-        <br><br>
 
-        <div id="questionContainer" v-if="symptoms.length > 0 && assessmentStatus != 'completed'">
-        <h1 style="text-align: left;"><span>Kindly answer <br>the following questions</span></h1>
-        <span>Respond with a Yes / No</span>
 
-        <hr>
-            <!-- Question goes here ... -->
-             <h2>{{ symptoms[0].question }}</h2>
-             <br>
-             <h6>{{ symptoms[0].description }}</h6>
-             <br>
-             <h4 style="font-size: 15px;">{{ curSymptom }} / {{ totalSymptoms }}</h4>
+        <div v-if="!ready">
+            <h1 style="text-align: left; font-style: italic;"><span>There is about <br><span style="color: #1b76d0; font-size: 40px;">80% chance we diagnose</span> you correctly...</span></h1>
+            <CountdownTimer :key="countdownKey" @countdown-finished="onCountdownFinished" />
+            <br><br>
+        </div>
 
-             <br>
+        <div v-if="ready">
+            <router-link to="/diagnosis"><i class="fa fa-arrow-left"></i> Go back to diagnosis | Restart</router-link>
+            <br><br>
 
-            <input class="radio" type="radio" name="response" v-model="selectedResponse" value="YES" id="yesOption" />
-            <label for="yesOption" style="font-size: 20px; font-weight: bold; color: black;">YES</label>
+            <div id="questionContainer" v-if="symptoms.length > 0 && assessmentStatus != 'completed'">
+            <h1 style="text-align: left;"><span>Kindly answer <br>the following streamlining questions</span></h1>
+            <span>Respond with a Yes / No</span>
 
-             <input class="radio" type="radio" name="response" v-model="selectedResponse" value="NO" id="noOption" />
-             <label for="noOption" style="font-size: 20px; font-weight: bold; color: black;">NO</label>
+            <hr>
+                <!-- Question goes here ... -->
+                <h2>{{ symptoms[0].question }}</h2>
+                <br>
+                <h6>{{ symptoms[0].description }}</h6>
+                <br>
+                <h4 style="font-size: 15px;">{{ curSymptom }} / {{ totalSymptoms }}</h4>
 
-            <br>
-            <div style="text-align: right;">
-                <button class="btn btn-md btn-primary" @click="nextQuestion" style="float: right;">Next</button>
-            </div>
+                <br>
+
+                <input class="radio" type="radio" name="response" v-model="selectedResponse" value="YES" id="yesOption" />
+                <label for="yesOption" style="font-size: 20px; font-weight: bold; color: black;">YES</label>
+
+                <input class="radio" type="radio" name="response" v-model="selectedResponse" value="NO" id="noOption" />
+                <label for="noOption" style="font-size: 20px; font-weight: bold; color: black;">NO</label>
+
+                <br>
+                <div style="text-align: right;">
+                    <button class="btn btn-md btn-primary" @click="nextQuestion" style="float: right;">Next</button>
+                </div>
+        </div>
 
         </div>
     </div>
@@ -36,9 +46,13 @@
 
 <script>
 import axios from 'axios';
+import CountdownTimer from './CountdownTimer.vue';
 
 export default {
-    name: 'AssessmentComponent',
+    name: 'AssessmentStreamlineComponent',
+    components : {
+        CountdownTimer
+    },
     data() {
         return {
             symptoms : [],
@@ -49,14 +63,15 @@ export default {
             responseMessage : '',
             curType : 'common',
             sessionId : '',
-            assessmentStatus : "in-progress"
+            assessmentStatus : "in-progress",
+            countdownKey: 0,
+            ready : false
         };
     },
     async mounted() {
-        console.log('Assessment Component is mounted!');
+        console.log('Assessment Streamline Component is mounted!');
 
-        // Generate unique session identifier
-        this.sessionId = await this.generateUniqueId();
+        // Generate unique session identifierfff
         this.fetchGeneralSymptoms();
 
         anime({
@@ -92,7 +107,8 @@ export default {
 
                     if(this.ids.length > 0 && this.curSymptom > this.ids.length)
                     {
-                        this.$router.push('/assessment-streamline');
+                        // New phase
+                        alert("Next")
                     }
                 }
                 else {
@@ -108,24 +124,10 @@ export default {
                 this.fetchGeneralSymptoms()
             }
         },
-        async generateUniqueId(length = 16) {
-            // Characters to use for the identifier
-            const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-            let result = '';
-
-            // Add randomness using current time
-            const datePart = Date.now().toString(36); // Base36 for compactness
-            result += datePart;
-
-            // Generate random characters
-            for (let i = result.length; i < length; i++) {
-                const randomIndex = Math.floor(Math.random() * chars.length);
-                result += chars[randomIndex];
-            }
-
-            // Return the unique identifier, trimmed to the desired length
-            return result.substr(0, length);
-        }
+        onCountdownFinished() {
+            this.ready = true
+            this.resetCountdown()
+        },
     }
 }
 </script>
