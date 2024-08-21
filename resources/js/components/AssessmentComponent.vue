@@ -7,12 +7,14 @@
         <h1 style="text-align: left;"><span>Kindly answer <br>the following questions</span></h1>
         <span>Respond with a Yes / No</span>
 
+        <div id="questionContainer" v-if="symptoms.length > 0">
         <hr>
-        <div id="questionContainer">
             <!-- Question goes here ... -->
-             <h2>Do you experience headache?</h2>
-             <h5>Do you experience headache?</h5>
-             <h4 style="font-size: 15px;">{{ curSymptoms }} / {{ totalSymptoms }}</h4>
+             <h2>{{ symptoms[0].question }}</h2>
+             <br>
+             <h6>{{ symptoms[0].description }}</h6>
+             <br>
+             <h4 style="font-size: 15px;">{{ curSymptom }} / {{ totalSymptoms }}</h4>
 
              <br>
 
@@ -39,11 +41,13 @@ export default {
     name: 'AssessmentComponent',
     data() {
         return {
-            symptoms : [],
-            curSymptoms : 0,
+            symptoms : [[]],
+            ids : [],
+            curSymptom : 0,
             totalSymptoms : 0,
             selectedResponse: '',
             responseMessage : '',
+            curType : 'common'
         };
     },
     mounted() {
@@ -58,30 +62,42 @@ export default {
     },
     methods: {
         async fetchGeneralSymptoms() {
-                try {
-                    // Send POST request to Laravel API
-                    const response = await axios.get('/api/v1/fetch-common-symptoms');
+            try {
+                // (this.curSymptom == 0)?'0':this.ids[this.curSymptom++]+"
+                console.log("/api/v1/fetch-common-symptoms?type="+this.curType+"&id="+this.curSymptom);
 
-                    if (response.data.length > 0) {
-                        this.symptoms = response.data;
-                        this.totalSymptoms = response.data.length;
+                // Send POST request to Laravel APIdd
+                const response = await axios
+                .get("/api/v1/fetch-common-symptoms?type="+this.curType+"&id="+this.curSymptom);
+
+                if (response.data.question) {
+                    this.symptoms = [response.data.question];
+                    this.totalSymptoms = response.data.count;
+                    this.ids = response.data.ids
+
+                    this.curType = response.data.question.type
+                    this.curId = response.data.question.id
+
+                    if(this.curSymptom >= this.ids.length && null == this.question)
+                    {
+                        // New phase
+                        alert("Next")
                     }
-                    else {
-                        this.responseMessage = 'No symptoms loaded';
-                    }
-                } catch (error) {
-                    // Handle errors
-                    this.responseMessage = error.response?.data?.message || 'An error occurred';
-                } finally {
-                    this.curSymptoms = 0;
                 }
+                else {
+                    this.responseMessage = 'No symptoms loaded';
+                }
+            } catch (error) {
+                // Handle errors
+                this.responseMessage = error.response?.data?.message || 'An error occurred';
+            }
         },
         nextQuestion() {
-            if (this.selectedResponse !== '') {
-                this.curSymptoms += 1;
+            if (this.selectedResponse !== '' && this.curSymptom < this.ids.length) {
+                this.curSymptom += 1;
                 this.selectedResponse = '';
 
-                // Optionally load the next symptom/question here
+                this.fetchGeneralSymptoms()
             }
         },
     }
@@ -101,5 +117,13 @@ export default {
 }
 .radio {
     margin: 40px;
+}
+.radio {
+  transform: scale(3.5);
+  margin: 40px;
+}
+
+label {
+  cursor: pointer;
 }
 </style>

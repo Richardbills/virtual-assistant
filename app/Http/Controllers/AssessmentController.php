@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Question;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Config;
 
-class AssistantController extends Controller
+class AssessmentController extends Controller
 {
     public array $dictionary;
 
@@ -36,5 +37,23 @@ class AssistantController extends Controller
         }
 
         return $patterns;
+    }
+
+    public function fetchCommonSymptoms(Request $request)
+    {
+        $id = (int)$request->id;
+
+        $question = Question::where('type', $request->type)
+        ->when(($id > 0), function($q){
+            $q->where('id', request()->id);
+        })
+        ->first();
+        $ids = Question::where('type', $request->type)->pluck('id');
+
+        return response()->json([
+            'question' => $question,
+            'ids' => $ids,
+            'count' => $ids->count()
+        ]);
     }
 }
