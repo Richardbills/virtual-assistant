@@ -26,13 +26,13 @@
                             <div class="col-lg-6 col-md-6 col-12">
                                 <ul>
                                     <li><a href="#"><i class="fa fa-caret-right" aria-hidden="true"></i>Home</a></li>
-                                    <li><a href="#"><i class="fa fa-caret-right" aria-hidden="true"></i>About Us</a></li>
+                                    <li><a href="{{route('about')}}"><i class="fa fa-caret-right" aria-hidden="true"></i>About Us</a></li>
                                     <li><a href="{{route('diagnosis')}}"><i class="fa fa-caret-right" aria-hidden="true"></i>Diagnosis</a></li>
                                 </ul>
                             </div>
                             <div class="col-lg-6 col-md-6 col-12">
                                 <ul>
-                                    <li><a href="#"><i class="fa fa-caret-right" aria-hidden="true"></i>Doctors</a></li>
+                                    <li><a href="{{route('doctors')}}"><i class="fa fa-caret-right" aria-hidden="true"></i>Doctors</a></li>
                                     <li><a href="#"><i class="fa fa-caret-right" aria-hidden="true"></i>Testimonials</a></li>
                                     <li><a href="#"><i class="fa fa-caret-right" aria-hidden="true"></i>FAQ</a></li>
                                     <li><a href="#"><i class="fa fa-caret-right" aria-hidden="true"></i>Contact Us</a></li>

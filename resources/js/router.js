@@ -17,6 +17,10 @@ const routes = [
         path: "/result",
         component: () => import("./components/ResultComponent.vue"),
     },
+    {
+        path: "/assessment-break",
+        component: () => import("./components/AssessmentBreakComponent.vue"),
+    },
 ];
 
 export default createRouter({

@@ -59,7 +59,7 @@
 			</div>
 		</section>
 		<!--/ End Slider Area -->
-		
+
 		<!-- Start Schedule Area -->
 		<section class="schedule">
 			<div class="container">
@@ -122,7 +122,7 @@
 			</div>
 		</section>
 		<!--/End Start schedule Area -->
-		
+
 		<!-- Start Feedback Area -->
 		<section class="newsletter section">
 			<div class="container">
@@ -138,7 +138,7 @@
 					<div class="col-lg-6  col-12">
 						<!-- Start Feedback Form -->
 						<div class="subscribe-form ">
-							<form action="mail/mail.php" method="get" target="_blank" class="newsletter-inner">
+							<form action="{{ route('feedback') }}" method="post" target="_blank" class="newsletter-inner">
 								<input name="feedback" placeholder="How did we make you feel" class="common-input" onfocus="this.placeholder = ''"
 									onblur="this.placeholder = 'How did we make you feel'" required="" type="text">
 								<button class="btn">Submit Feedback</button>

@@ -91,12 +91,24 @@ export default {
                     this.curType = response.data.question.type
                     this.curId = response.data.question.id
 
+                    var accuracy = parseInt(this.trueAnswers)/parseInt(this.totalSymptoms)
+                    console.log(accuracy)
+
                     if(this.ids.length > 0 && this.curSymptom > this.ids.length)
                     {
-                        this.$router.push({
-                            path: '/assessment-streamline',
-                            query: { sessionId: this.sessionId, percentage : (this.trueAnswers/this.totalSymptoms)*100 }
-                        });
+                        if(accuracy >= 0.71)
+                        {
+                            this.$router.push({
+                                path: '/assessment-streamline',
+                                query: { sessionId: this.sessionId, percentage : (this.trueAnswers/this.totalSymptoms)*100 }
+                            });
+                        }
+                        else{
+                            this.$router.push({
+                                path: '/assessment-break',
+                                query: { sessionId: this.sessionId, percentage : (this.trueAnswers/this.totalSymptoms)*100 }
+                            });
+                        }
                     }
                 }
                 else {
