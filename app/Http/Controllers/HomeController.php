@@ -15,4 +15,20 @@ class HomeController extends Controller
     {
         return view('pages.diagnosis');
     }
+
+    public function doctors()
+    {
+        return view('pages.doctors');
+    }
+
+    public function about()
+    {
+        return view('pages.about');
+    }
+
+    public function feedback()
+    {
+        
+        return redirect()->back();
+    }
 }
