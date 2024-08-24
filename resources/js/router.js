@@ -13,6 +13,10 @@ const routes = [
         path: "/assessment-streamline",
         component: () => import("./components/AssessmentStreamlineComponent.vue"),
     },
+    {
+        path: "/result",
+        component: () => import("./components/ResultComponent.vue"),
+    },
 ];
 
 export default createRouter({

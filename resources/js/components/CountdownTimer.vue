@@ -1,6 +1,6 @@
 <template>
     <div>
-      Redirecting in {{ timeLeft }}s ...
+      Continue in {{ timeLeft }}s ...
     </div>
   </template>
 
@@ -9,7 +9,7 @@
     name: 'CountdownTimer',
     data() {
       return {
-        timeLeft: 5,
+        timeLeft: 3,
         timer: null,
       };
     },
