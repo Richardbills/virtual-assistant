@@ -23,10 +23,8 @@
 
                     <img class="modal-title" src="/public/img/eb-assistant-bare.png" alt="EB Assistant Animation">
                     <br><br>
-                    You are not alone dear, we are going to help you navigate thoughts
+                    You are not alone dear, we are going to help you navigate thoughts like
                     <br>
-                    <br>
-                    <h5 style="color: #1b76d0">Like</h5>
                     <br>
 
                     <div v-html="similarSearch"></div>

@@ -17,7 +17,7 @@
                 <div class="col-lg-6 col-md-7 col-12">
                     <!-- Top Contact -->
                     <ul class="top-contact">
-                        <li><i class="fa fa-phone"></i><a href="tel:+44 77800 80996">+44 77800 80996</a></li>
+                        <li><i class="fa fa-phone"></i><a href="tel:+44 7780 579156">+44 7780 579156</a></li>
                         <li><i class="fa fa-envelope"></i><a href="mailto:support@medicassist.com">support@medicassist.com</a></li>
                     </ul>
                     <!-- End Top Contact -->

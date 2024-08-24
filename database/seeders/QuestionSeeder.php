@@ -17,7 +17,7 @@ class QuestionSeeder extends Seeder
             // Common symptoms
             [
                 'type' => "common",
-                'question' => "Feeling a Persistent Low Mood and Sadness",
+                'question' => "Do you feeling a Persistent Low Mood and Sadness",
                 'description' => "Do you experience a persistent feeling of sadness and low mood that affects daily life", 'group_id' => 0
             ],
             [
@@ -27,7 +27,7 @@ class QuestionSeeder extends Seeder
             ],
             [
                 'type' => "common",
-                'question' => "Any Fatigue and Lack of Energy",
+                'question' => "Do you feel any Fatigue and Lack of Energy",
                 'description' => "Feeling tired all the time and having a lack of energy", 'group_id' => 0
             ],
             [
@@ -47,7 +47,7 @@ class QuestionSeeder extends Seeder
             ],
             [
                 'type' => "common",
-                'question' => "Any Thoughts of Death or Suicide",
+                'question' => "Do you have any Thoughts of Death or Suicide",
                 'description' => "Possible suicidal thoughts", 'group_id' => 0
             ],
         ];
@@ -57,22 +57,22 @@ class QuestionSeeder extends Seeder
             // General symptoms
             [
                 'type' => "general",
-                'question' => "Physical Symptoms",
+                'question' => "Do you experience any physical symptoms",
                 'description' => "Includes physical signs like moving or speaking slowly, constipation, and unexplained aches and pains", 'group_id' => 1
             ],
             [
                 'type' => "general",
-                'question' => "Social Withdrawal",
-                'description' => "People with general depression might avoid social contact and neglect hobbies, leading to difficulties in home, work, or family life.", 'group_id' => 1
+                'question' => "Do you find yourself Socially withdrawing",
+                'description' => "Includes avoiding social contact and neglect hobbies, leading to difficulties in home, work, or family life.", 'group_id' => 1
             ],
             [
                 'type' => "general",
-                'question' => "Severity and Variability",
-                'description' => "Depression can range from mild to severe and can come on gradually, making it hard to notice initially.", 'group_id' => 1
+                'question' => "Does your experience seem severe or unpredictable",
+                'description' => "It can range from mild to severe and can come on gradually, making it hard to notice initially.", 'group_id' => 1
             ],
             [
                 'type' => "general",
-                'question' => "Psychological Symptoms",
+                'question' => "Any noticeable psychological symptoms",
                 'description' => "Feelings of guilt, hopelessness, low self-esteem, and irritability are more emphasized.", 'group_id' => 1
             ]
         ];
@@ -81,13 +81,13 @@ class QuestionSeeder extends Seeder
             // postnatal symptoms
             [
                 'type' => "postnatal",
-                'question' => "Did you have a child in the past 1 year",
-                'description' => "Specifically occurs after childbirth and can affect both mothers and fathers.", 'group_id' => 2
+                'question' => "Have you had a child in the past 1 year",
+                'description' => "This can occurs after childbirth and can affect both mothers and fathers.", 'group_id' => 2
             ],
             [
                 'type' => "postnatal",
-                'question' => "Do find it difficult to care for your Baby",
-                'description' => "This form of depression often includes difficulty in caring for oneself and the baby, as well as frightening thoughts about harming the baby.", 'group_id' => 2
+                'question' => "Do you find it difficult to care for your Baby (if you have any)",
+                'description' => "This often includes difficulty in caring for oneself and the baby, as well as frightening thoughts about harming the baby.", 'group_id' => 2
             ],
             [
                 'type' => "postnatal",
@@ -110,7 +110,7 @@ class QuestionSeeder extends Seeder
             ],
             [
                 'type' => "psychotic",
-                'question' => "Any Psychomotor Changes",
+                'question' => "Do you notice any Psychomotor Changes",
                 'description' => "Includes psychomotor agitation (restlessness and inability to sit still) or psychomotor retardation (slowed movements and thoughts).", 'group_id' => 3
             ],
             [

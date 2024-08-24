@@ -35,7 +35,7 @@
                                     <li><a href="#"><i class="fa fa-caret-right" aria-hidden="true"></i>Doctors</a></li>
                                     <li><a href="#"><i class="fa fa-caret-right" aria-hidden="true"></i>Testimonials</a></li>
                                     <li><a href="#"><i class="fa fa-caret-right" aria-hidden="true"></i>FAQ</a></li>
-                                    <li><a href="#"><i class="fa fa-caret-right" aria-hidden="true"></i>Contact Us</a></li>	
+                                    <li><a href="#"><i class="fa fa-caret-right" aria-hidden="true"></i>Contact Us</a></li>
                                 </ul>
                             </div>
                         </div>
@@ -73,7 +73,7 @@
             <div class="row">
                 <div class="col-lg-12 col-md-12 col-12">
                     <div class="copyright-content">
-                        <p>© Copyright {{ date('Y')}}  |  All Rights Reserved by <a href="https://www.linkedin.com/in/ebenezer-babalola-654493158" target="_blank">Ebenezer Babalola</a> </p>
+                        <p>© Copyright {{ date('Y')}}  |  All Rights Reserved by <a href="#" target="_blank">Richard Ilinosi</a> </p>
                     </div>
                 </div>
             </div>

@@ -49,7 +49,8 @@ export default {
             responseMessage : '',
             curType : 'common',
             sessionId : '',
-            assessmentStatus : "in-progress"
+            assessmentStatus : "in-progress",
+            trueAnswers : 0
         };
     },
     async mounted() {
@@ -68,8 +69,6 @@ export default {
     methods: {
         async fetchGeneralSymptoms() {
             try {
-                console.log(this.curSymptom)
-                console.log(this.ids.length)
                 // Send POST request to Laravel API
                 if(this.ids.length > 0)
                 {
@@ -78,6 +77,8 @@ export default {
                         this.assessmentStatus = "completed";
                     }
                 }
+
+                if(this.selectedResponse == "YES") {this.trueAnswers +=1 }
 
                 const response = await axios.get("/api/v1/fetch-common-symptoms?type="+this.curType+"&id="+this.curSymptom+"&session_id="+this.sessionId+"&question_id="+this.curSymptom+"&answer="+this.selectedResponse+"&flag="+this.assessmentStatus);
 
@@ -92,7 +93,10 @@ export default {
 
                     if(this.ids.length > 0 && this.curSymptom > this.ids.length)
                     {
-                        this.$router.push('/assessment-streamline');
+                        this.$router.push({
+                            path: '/assessment-streamline',
+                            query: { sessionId: this.sessionId, percentage : (this.trueAnswers/this.totalSymptoms)*100 }
+                        });
                     }
                 }
                 else {
