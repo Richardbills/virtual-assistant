@@ -9,7 +9,7 @@
     name: 'CountdownTimer',
     data() {
       return {
-        timeLeft: 1,
+        timeLeft: 3,
         timer: null,
       };
     },
