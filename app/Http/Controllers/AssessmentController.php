@@ -67,4 +67,32 @@ class AssessmentController extends Controller
             'count' => $ids->count()
         ]);
     }
+
+    public function fetchStreamlineSymptoms(Request $request)
+    {
+        $id = (int)$request->id;
+
+        $question = Question::where('type', '!=', 'common')
+        ->when(($id > 0), function($q){
+            $q->where('id', request()->id);
+        })
+        ->first();
+        $ids = Question::where('type', '!=', 'common')->pluck('id');
+
+
+        // Store answers if any
+        if($request->answer == "YES" || $request->answer == "NO")
+        {
+            Answer::updateOrCreate(
+                ['session_id' => $request->session_id, 'question_id' => $request->question_id],
+                ['answer' => $request->answer]
+            );
+        }
+
+        return response()->json([
+            'question' => $question,
+            'ids' => $ids,
+            'count' => $ids->count()
+        ]);
+    }
 }
