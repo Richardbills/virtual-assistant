@@ -1,16 +1,38 @@
 <template>
 
-    <div class="assessment-component" style="text-align: left;">
+    <div class="assessment-component" style="text-align: left; color: #000">
 
         <div>
+
             <router-link to="/diagnosis"><i class="fa fa-arrow-left"></i> Go back to diagnosis | Restart</router-link>
             <br><br>
 
-            <img id="assistant" src="/public/img/eb-assistant.png" alt="RI Assistant Animation">
+            Thank you Bueze. All done! I have put together a report that outlines the possible causes of your situation.
             <br><br>
-            <hr><br>
+            Don't forget that this is not a medical diagnosis. If in doubt it is always best to seek advice from a medical professional
+            <br>
+            <br>
 
+            <h3><strong>Report</strong></h3>
+            <hr>
+            <ul>
+                <li>Name: Bueze</li>
+                <li>Gender: Male</li>
+                <li>Date of birth: 24/11/2024</li>
+            </ul>
 
+            <br>
+            <h2>Summary:</h2>
+            <hr>
+            You are more likely to be experiencing Postnatal depression which is characterized by 70% of the symptoms you presented with and includes most of the following;
+            <ul>
+                <li>Sadness</li>
+            </ul>
+
+            <h2>Possible solution</h2>
+            <hr>
+            1.
+            <br><br>
 
         </div>
     </div>
@@ -29,9 +51,7 @@ export default {
             pos : -1,
             curSymptom : 0,
             totalSymptoms : 0,
-            selectedResponse: '',
             responseMessage : '',
-            curType : 'common',
             sessionId : '',
         };
     },
@@ -41,31 +61,12 @@ export default {
         this.sessionId = this.$route.query.sessionId;
 
         // Generate unique session identifier
-        this.fetchGeneralSymptoms();
-
-        anime({
-            targets: '.assessment-component',
-            translateY: 30,
-            duration: 9000,
-        });
+        this.fetchResultSymptoms();
     },
     methods: {
-        async fetchGeneralSymptoms() {
+        async fetchResultSymptoms() {
             try {
-                // Send POST request to Laravel API
-                if(this.ids.length > 0)
-                {
-                    this.curSymptom = this.ids[this.pos];
-
-                    if(parseInt(this.pos) >= parseInt(this.totalSymptoms))
-                    {
-                        this.assessmentStatus = "completed";
-                        console.log("completed on :" + this.pos)
-                        this.curSymptom = this.ids[this.pos-1];
-                    }
-                }
-
-                const response = await axios.get("/api/v1/fetch-streamline-symptoms?type="+this.curType+"&id="+this.curSymptom+"&session_id="+this.sessionId+"&question_id="+this.curSymptom+"&answer="+this.selectedResponse+"&flag="+this.assessmentStatus);
+                const response = await axios.get("/api/v1/fetch-streamline-symptoms");
 
                 if (response.data.question) {
                     this.symptoms = [response.data.question];
@@ -76,13 +77,10 @@ export default {
                     this.curType = response.data.question.type
                     this.curId = response.data.question.id
 
-                    if(this.totalSymptoms > 0 && this.pos > this.totalSymptoms)
-                    {
-                        this.$router.push('/result');
-                    }
-                }
-                else {
-                    this.responseMessage = 'No symptoms loaded';
+                    // if(this.totalSymptoms > 0 && this.pos > this.totalSymptoms)
+                    // {
+                    //     this.$router.push('/result');
+                    // }
                 }
             } catch (error) {
                 // Handle errors
@@ -103,16 +101,5 @@ export default {
 #message {
     color: red;
     font-weight: bold;
-}
-.radio {
-    margin: 40px;
-}
-.radio {
-  transform: scale(3.5);
-  margin: 40px;
-}
-
-label {
-  cursor: pointer;
 }
 </style>
