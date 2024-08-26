@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Answer;
+use App\Models\Group;
 use App\Models\Question;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Config;
 
@@ -43,6 +45,14 @@ class AssessmentController extends Controller
     public function fetchCommonSymptoms(Request $request)
     {
         $id = (int)$request->id;
+        // return $request->all();
+        if(strlen($request->session_id) > 0)
+        {
+            User::updateOrCreate(
+                ['session_id' => $request->session_id],
+                ['name' => $request->name, 'gender' => $request->gender, 'dob' => $request->dob]
+            );
+        }
 
         $question = Question::where('type', $request->type)
         ->when(($id > 0), function($q){
@@ -94,5 +104,62 @@ class AssessmentController extends Controller
             'ids' => $ids,
             'count' => $ids->count()
         ]);
+    }
+
+    public function fetchResultSymptoms()
+    {
+        $data = Group::with(['questions.answers' => function($query) {
+            $query->where('session_id', request()->session_id);
+        }])
+        ->where('group', '!=', '-')
+        ->get();
+
+        $user = User::where('session_id', request()->session_id)->first();
+        return $this->getCounts($data, $user);
+    }
+
+    private function getCounts($data, $user) {
+        $results = [];
+
+        foreach ($data as $group) {
+            $groupName = $group['group'];
+            $groupDescription = $group['description'] ?? '';
+            $groupSolution = $group['solution'] ?? '';
+            $groupLink = $group['link'] ?? '';
+            $totalQuestions = 0;
+            $yesCount = 0;
+
+            foreach ($group['questions'] as $question) {
+                $totalQuestions++;
+
+                foreach ($question['answers'] as $answer) {
+                    if ($answer['answer'] === "YES") {
+                        $yesCount++;
+                    }
+                }
+            }
+
+            if($yesCount > 0 && $totalQuestions > 0)
+            {
+                if(($yesCount/$totalQuestions) >= 0.71)
+                {
+                    $results[] = [
+                        'user' => $user,
+                        'group' => $groupName,
+                        'description' => $groupDescription,
+                        'solution' => $groupSolution,
+                        'link' => $groupLink,
+                        'total_questions' => $totalQuestions,
+                        'yes_count' => $yesCount,
+                        'name' => $user->name,
+                        'gender' => $user->gender,
+                        'dob' => $user->dob,
+                    ];
+                }
+            }
+
+        }
+
+        return $results;
     }
 }

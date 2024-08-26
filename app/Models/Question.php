@@ -9,4 +9,14 @@ class Question extends Model
 {
     use HasFactory;
     protected $guarded = [];
+
+    public function group()
+    {
+        return $this->belongsTo(Group::class);
+    }
+
+    public function answers()
+    {
+        return $this->hasMany(Answer::class);
+    }
 }
