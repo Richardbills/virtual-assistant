@@ -139,6 +139,7 @@
 						<!-- Start Feedback Form -->
 						<div class="subscribe-form ">
 							<form action="{{ route('feedback') }}" method="post" target="_blank" class="newsletter-inner">
+                                @csrf
 								<input name="feedback" placeholder="How did we make you feel" class="common-input" onfocus="this.placeholder = ''"
 									onblur="this.placeholder = 'How did we make you feel'" required="" type="text">
 								<button class="btn">Submit Feedback</button>
