@@ -23,6 +23,14 @@ MedicAssist is a virtual Assistant - Online
 - Run php artisan migrate:fresh --seed
 - Run npm run watch
 
+## Python setup for ML
+- brew install python
+- curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
+- python3 get-pip.py
+- pip3 install scikit-learn
+- Test with ``python3 ./virtual-assistant/scripts/text_classifier.py "What do i want for lunch" ``
+
+
 ## Resources
 - https://vueschool.io/articles/vuejs-tutorials/the-ultimate-guide-for-using-vue-js-with-laravel/
 

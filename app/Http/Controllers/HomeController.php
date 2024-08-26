@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Feedback;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -28,7 +29,7 @@ class HomeController extends Controller
 
     public function feedback()
     {
-        
+        Feedback::create(['feedback' => request()->feedback]);
         return redirect()->back();
     }
 }

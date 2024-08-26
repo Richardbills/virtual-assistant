@@ -7,34 +7,44 @@
         <p>Feel free to summarize how you feel and let's help you identify what the issue might be</p>
 
         <form class="search-form" @submit.prevent="submitForm">
+    <table class="table">
+        <tbody>
+            <tr>
+                <!-- First column: Name -->
+                <td class="form-group">
+                    <label for="name">Name</label>
+                    <input id="name" style="width: 100%;" placeholder="Rishi Eb" type="text" v-model="name" />
+                </td>
 
-            <div class="form-group">
-                <label for="name">Name</label>:
-                <input id="name" style=" width: 74%;" placeholder="Enter your name" type="text"
-                    v-model="name" />
-            </div>
+                <!-- Second column: D.O.B -->
+                <td class="form-group">
+                    <label for="dob">D.O.B</label>
+                    <input id="dob" type="date" style="width: 100%;" v-model="dob" />
+                </td>
 
-            <div class="form-group">
-                <label for="dob">D.O.B</label>:
-                <input id="dob" type="date" style=" width: 74%;" v-model="dob" />
-            </div>
+                <!-- Third column: Gender and Search -->
+                <td class="form-group">
+                    <label for="gender">Gender</label>
+                    <select id="gender" name="gender" v-model="gender" style="width: 100%; padding: 15px; background: #eee; border: 0; border-radius: 3px;">
+                        <option value="" disabled>Select your gender</option>
+                        <option value="Male">Male</option>
+                        <option value="Female">Female</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                 <td class="form-group" colspan="3">
+                    <!-- Search input and button -->
+                    <input placeholder="Search : I feel fed up with life" type="text" v-model="formData.search" style="width: 70%;" />
+                    <button class="btn" type="submit" style="width: 20%; margin-top: 5px;"><i class="fa fa-search"></i></button><br>
+                    <span v-if="message" v-html="message" style="color: red"></span>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</form>
 
-            <div class="form-group">
-                <label for="gender">Gender</label>:
-                <select id="gender" name="gender" v-model="gender" style="
-                    padding: 15px; background: #eee; border: 0; border-radius: 3px;width: 74%;">
-                    <option value="" disabled>Select your gender</option>
-                    <option value="Male">Male</option>
-                    <option value="Female">Female</option>
-                </select>
-            </div>
 
-            <div class="form-group">
-                <input placeholder="Search : I feel fed up with life" type="text" v-model="formData.search">
-                <button class="btn" type="submit"><i class="fa fa-search"></i></button>
-                <span v-if="message">{{ message }}</span>
-            </div>
-        </form>
 
     </div>
 
@@ -47,13 +57,15 @@
 
                     <img class="modal-title" src="/public/img/eb-assistant-bare.png" alt="EB Assistant Animation">
                     <br><br>
+                    It seems to be you might be affected by issues. Such as <strong>{{ prediction }}</strong>/issue.
                     You are not alone dear, we are going to help you navigate thoughts like
                     <br>
                     <br>
 
                     <div v-html="similarSearch"></div>
 
-                    <h4 style="color: #1b76d0">Let's proceed in understanding how you feel with a few more questions
+                    <h4 style="color: #1b76d0"><br>Let's proceed with understanding how you feel with a few more
+                        questions
                     </h4>
                     <br>
 
@@ -89,6 +101,7 @@ export default {
             gender: '',
             dob: '',
             countdownKey: 0,
+            prediction: ''
         };
     },
     mounted() {
@@ -107,14 +120,15 @@ export default {
                     // Send POST request to Laravel API
                     const response = await axios.post('/api/v1/assess-query', this.formData);
 
-                    if (response.data.length > 0) {
+                    if (response.data.related_terms.length > 0) {
                         this.formData = { search: '' };
                         this.triggerModal();
                         this.responseFound = true;
 
                         this.similarSearch = "";
-                        response.data.forEach(res => {
-                            this.similarSearch += "<h4 style='color: #000 !important'><strong><i>" + res + " ...</i></strong></h4><br>";
+                        this.prediction = response.data.prediction;
+                        response.data.related_terms.forEach(res => {
+                            this.similarSearch += "<h4 style='color: #000 !important; font-size: 12px; margin: 2px;' class='badge badge-warning'><strong><i>" + res + " ...</i></strong></h4>";
                         });
                     }
                     else {
@@ -123,24 +137,32 @@ export default {
                 } catch (error) {
                     // Handle errors
                     if (error.response && error.response.data) {
-                        this.responseMessage = error.response.data.message || 'An error occurred';
+                        this.message = error.response.data.message || 'An error occurred';
                     } else {
-                        this.responseMessage = 'An error occurred';
+                        this.message = 'An error occurred';
                     }
                 }
             }
+            else{
+                this.message = "Oh! sorry, seems there are missing fields"
+            }
         },
         triggerModal() {
-            $('#AssistantModal').modal()
-            this.resetCountdown()
+            if ('' != this.name && '' != this.gender && '' != this.name) {
+                $('#AssistantModal').modal()
+                this.resetCountdown()
+            }
+
         },
         onCountdownFinished() {
             if (this.responseFound) {
-                $('#AssistantModal').modal('toggle')
-                this.proceedToDiagnosis();
-            }
-            else {
-                this.resetCountdown()
+                if ('' != this.name && '' != this.gender && '' != this.name) {
+                    $('#AssistantModal').modal('toggle')
+                    this.proceedToDiagnosis();
+                }
+                else {
+                    this.message = "Oh! sorry, seems there are missing fields"
+                }
             }
         },
         resetCountdown() {
@@ -150,7 +172,7 @@ export default {
             // Navigate to next page
             this.$router.push({
                 path: '/assessment',
-                query: {name: this.name, gender: this.gender, dob: this.dob}
+                query: { name: this.name, gender: this.gender, dob: this.dob }
             });
         },
     }
