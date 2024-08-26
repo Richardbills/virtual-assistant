@@ -57,7 +57,7 @@
 
                     <img class="modal-title" src="/public/img/eb-assistant-bare.png" alt="EB Assistant Animation">
                     <br><br>
-                    It seems to be you might be affected by issues. Such as <strong>{{ prediction }}</strong>/issue.
+                    It appears you may be experiencing some issues, such as <strong>{{ prediction }}</strong>/issue.
                     You are not alone dear, we are going to help you navigate thoughts like
                     <br>
                     <br>
