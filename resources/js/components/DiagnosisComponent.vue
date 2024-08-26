@@ -1,17 +1,41 @@
 <template>
     <div class="assistant-component">
         <img id="assistant" src="/public/img/eb-assistant.png" alt="EB Assistant Animation">
-        <br><br>
-        <hr><br>
+        <hr>
 
         <h1><span>Let's get started</span></h1>
         <p>Feel free to summarize how you feel and let's help you identify what the issue might be</p>
 
         <form class="search-form" @submit.prevent="submitForm">
-            <input placeholder="Search : I feel fed up with life" type="text" v-model="formData.search">
-            <button class="btn" type="submit"><i class="fa fa-search"></i></button>
-            <span v-if="message">{{ message }}</span>
+
+            <div class="form-group">
+                <label for="name">Name</label>:
+                <input id="name" style=" width: 74%;" placeholder="Enter your name" type="text"
+                    v-model="name" />
+            </div>
+
+            <div class="form-group">
+                <label for="dob">D.O.B</label>:
+                <input id="dob" type="date" style=" width: 74%;" v-model="dob" />
+            </div>
+
+            <div class="form-group">
+                <label for="gender">Gender</label>:
+                <select id="gender" name="gender" v-model="gender" style="
+                    padding: 15px; background: #eee; border: 0; border-radius: 3px;width: 74%;">
+                    <option value="" disabled>Select your gender</option>
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <input placeholder="Search : I feel fed up with life" type="text" v-model="formData.search">
+                <button class="btn" type="submit"><i class="fa fa-search"></i></button>
+                <span v-if="message">{{ message }}</span>
+            </div>
         </form>
+
     </div>
 
     <!-- Modal -->
@@ -29,10 +53,11 @@
 
                     <div v-html="similarSearch"></div>
 
-                    <h4 style="color: #1b76d0">Let's proceed in understanding how you feel with a few more questions</h4>
+                    <h4 style="color: #1b76d0">Let's proceed in understanding how you feel with a few more questions
+                    </h4>
                     <br>
 
-                   <CountdownTimer :key="countdownKey" @countdown-finished="onCountdownFinished" />
+                    <CountdownTimer :key="countdownKey" @countdown-finished="onCountdownFinished" />
                 </div>
             </div>
         </div>
@@ -56,15 +81,22 @@ export default {
             similarSearch: '',
             formData: {
                 search: '',
+                name: '',
+                gender: '',
+                dob: ''
             },
+            name: '',
+            gender: '',
+            dob: '',
             countdownKey: 0,
         };
     },
     mounted() {
         console.log('Assistant Component is mounted!');
+
         anime({
             targets: '#assistant',
-            translateY: 50,
+            translateY: -30,
             duration: 1000,
         });
     },
@@ -103,12 +135,11 @@ export default {
             this.resetCountdown()
         },
         onCountdownFinished() {
-            if(this.responseFound)
-            {
+            if (this.responseFound) {
                 $('#AssistantModal').modal('toggle')
                 this.proceedToDiagnosis();
             }
-            else{
+            else {
                 this.resetCountdown()
             }
         },
@@ -117,7 +148,10 @@ export default {
         },
         proceedToDiagnosis() {
             // Navigate to next page
-            this.$router.push('/assessment');
+            this.$router.push({
+                path: '/assessment',
+                query: {name: this.name, gender: this.gender, dob: this.dob}
+            });
         },
     }
 }

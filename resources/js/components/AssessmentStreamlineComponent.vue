@@ -94,7 +94,6 @@ export default {
                     if(parseInt(this.pos) >= parseInt(this.totalSymptoms))
                     {
                         this.assessmentStatus = "completed";
-                        console.log("completed on :" + this.pos)
                         this.curSymptom = this.ids[this.pos-1];
                     }
                 }
@@ -112,7 +111,10 @@ export default {
 
                     if(this.totalSymptoms > 0 && this.pos > this.totalSymptoms)
                     {
-                        this.$router.push('/result');
+                        this.$router.push({
+                            path: '/result',
+                            query: { sessionId: this.sessionId }
+                        });
                     }
                 }
                 else {

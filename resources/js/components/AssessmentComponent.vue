@@ -50,7 +50,10 @@ export default {
             curType : 'common',
             sessionId : '',
             assessmentStatus : "in-progress",
-            trueAnswers : 0
+            trueAnswers : 0,
+            name: '',
+            gender: '',
+            dob: ''
         };
     },
     async mounted() {
@@ -58,6 +61,11 @@ export default {
 
         // Generate unique session identifier
         this.sessionId = await this.generateUniqueId();
+
+        this.name = this.$route.query.name;
+        this.gender = this.$route.query.gender;
+        this.dob = this.$route.query.dob;
+
         this.fetchGeneralSymptoms();
 
         anime({
@@ -80,7 +88,7 @@ export default {
 
                 if(this.selectedResponse == "YES") {this.trueAnswers +=1 }
 
-                const response = await axios.get("/api/v1/fetch-common-symptoms?type="+this.curType+"&id="+this.curSymptom+"&session_id="+this.sessionId+"&question_id="+this.curSymptom+"&answer="+this.selectedResponse+"&flag="+this.assessmentStatus);
+                const response = await axios.get("/api/v1/fetch-common-symptoms?type="+this.curType+"&id="+this.curSymptom+"&session_id="+this.sessionId+"&question_id="+this.curSymptom+"&answer="+this.selectedResponse+"&flag="+this.assessmentStatus+"&name="+this.name+"&gender="+this.gender+"&dob="+this.dob);
 
                 if (response.data.question) {
                     this.symptoms = [response.data.question];
@@ -92,7 +100,6 @@ export default {
                     this.curId = response.data.question.id
 
                     var accuracy = parseInt(this.trueAnswers)/parseInt(this.totalSymptoms)
-                    console.log(accuracy)
 
                     if(this.ids.length > 0 && this.curSymptom > this.ids.length)
                     {
@@ -100,7 +107,9 @@ export default {
                         {
                             this.$router.push({
                                 path: '/assessment-streamline',
-                                query: { sessionId: this.sessionId, percentage : (this.trueAnswers/this.totalSymptoms)*100 }
+                                query: {
+                                    sessionId: this.sessionId, percentage : (this.trueAnswers/this.totalSymptoms)*100,
+                                }
                             });
                         }
                         else{
