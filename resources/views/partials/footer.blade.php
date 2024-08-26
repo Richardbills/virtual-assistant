@@ -56,8 +56,9 @@
                     <div class="single-footer">
                         <h2>Newsletter</h2>
                         <p>Subscribe to our newsletter to get allour news in your inbox.</p>
-                        <form action="#" method="get" target="_blank" class="newsletter-inner">
-                            <input name="email" placeholder="Email Address" class="common-input" onfocus="this.placeholder = ''"
+                        <form action="{{ route('feedback') }}" method="post" target="_blank" class="newsletter-inner">
+                            @csrf
+                            <input name="feedback" placeholder="Email Address" class="common-input" onfocus="this.placeholder = ''"
                                 onblur="this.placeholder = 'Your email address'" required="" type="email">
                             <button class="button"><i class="icofont icofont-paper-plane"></i></button>
                         </form>
