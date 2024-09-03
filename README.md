@@ -17,7 +17,7 @@ MedicAssist is a virtual Assistant - Online
 - Realtime Chat (Tawk https://www.tawk.to/)
 
 ## Setup instructions
-- Clone the repository
+- Clone the repository | https://github.com/Richardbills/virtual-assistant.git
 - Setup up the environment by duplicating the .env.example and updating with correct details 
 - Run npm install
 - Run php artisan migrate:fresh --seed
