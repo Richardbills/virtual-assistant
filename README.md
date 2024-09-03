@@ -35,7 +35,7 @@ MedicAssist is a virtual Assistant - Online
 - https://vueschool.io/articles/vuejs-tutorials/the-ultimate-guide-for-using-vue-js-with-laravel/
 
 ## Credits
-Application developed by Richard Iloanusi https://www.linkedin.com/in/ebenezer-babalola-654493158/
+Application developed by Richard Iloanusi https://www.linkedin.com/in/iloanusi-richard-39348529b?trk=contact-info
 
 ## Diagnostic Criteria
 Mental health professionals often use diagnostic criteria from the Diagnostic and Statistical Manual of Mental Disorders (DSM-5) or similar resources. According to DSM-5, a diagnosis of Major Depressive Disorder (MDD) requires:
